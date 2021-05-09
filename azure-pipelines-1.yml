@@ -1,0 +1,40 @@
+# Maven
+- task: ArtifactoryToolsInstaller@1
+  inputs:
+    artifactoryService: 'Kayal_Art'
+    cliInstallationRepo: 'jfrog-cli'
+    installCustomVersion: true
+    cliVersion: '1.43.2'
+    installExtractors: true
+    extractorsInstallationRepo: 'Extractors'
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+- task: ArtifactoryProperties@1
+  inputs:
+    command: 'set'
+    artifactoryService: 'Kayal_Art'
+    setProps: 'key1=value1'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "generic-local/*.zip"
+          }
+        ]
+      }
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
