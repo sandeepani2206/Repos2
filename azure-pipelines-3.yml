@@ -27,6 +27,8 @@ steps:
   inputs:
     command: 'set'
     artifactoryService: 'Kayal_Art'
+    installCustomVersion: true
+    cliVersion: '1.43.2'
     setProps: 'key1=value1'
     specSource: 'taskConfiguration'
     fileSpec: |
